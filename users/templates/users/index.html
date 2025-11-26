@@ -1,0 +1,40 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Главная - WelcomeApp{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h2 class="hero-title">Добро пожаловать!</h2>
+        <p class="hero-subtitle">Введите ваше имя, и мы поприветствуем вас персонально</p>
+        
+        <form method="post" action="{% url 'greeting' %}" class="name-form">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="error">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="submit-btn">
+                <span>Отправить</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </form>
+
+        {% if recent_names %}
+        <div class="recent-names">
+            <h3>Недавно добавленные имена:</h3>
+            <div class="names-list">
+                {% for name in recent_names %}
+                    <span class="name-tag">{{ name.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
